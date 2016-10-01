@@ -23,6 +23,7 @@ main {
   /*padding: 5mm;*/
   border-radius: 5mm;
   margin-bottom: 2em;
+  box-shadow: 4px 0 5px gray, 0 4px 5px gray;
 }
 
 #calculator-title {
@@ -40,7 +41,12 @@ main {
 }
 
 #main-display {
-  font-size: 24px;
+  font-size: 32px;
+  margin-bottom: 0;
+}
+
+#second-display{
+  margin-bottom: 0;
 }
 
 .black-button {

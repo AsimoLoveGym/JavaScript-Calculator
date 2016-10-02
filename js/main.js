@@ -1,6 +1,8 @@
 var input = "";
 var currentInput = "";
 var lastOperator = "";
+var operatorPattern = /\+|\-|x|÷/;
+var operatorPatternGlobal = /\+|\-|x|÷/g;
 
 $(document).ready(function(){
   $(".btn").click(function(event){
@@ -9,7 +11,7 @@ $(document).ready(function(){
     // console.log("click function works!!");
     singleInput = event.currentTarget.innerHTML;
     var numberPattern = /\d|\./;
-    var operatorPattern = /\+|\-|x|÷/;
+
     if (numberPattern.test(singleInput)) {
       // console.log("it's a number or '.'");
       input += singleInput;
@@ -39,7 +41,34 @@ $(document).ready(function(){
 });
 
 function calculating(equationString) {
-  console.log("Calculating........");
+  var numbersArray = [];
+  var operatorsArray = [];
+  var operatorsIndex = -1;
+  var subStringOIndex = -1;
+  var slicedString = "";
+  // for Test
+  equationString = "1+2x3-6÷2+5";
+  numbersArray = equationString.split(operatorPattern);
+  console.log(numbersArray);
+
+  operatorsIndex = equationString.search(operatorPattern);
+  subStringOIndex = operatorsIndex;
+  operatorsArray.push(equationString.charAt(operatorsIndex));
+  // var num = 0;
+  while (subStringOIndex>-1) {
+    slicedString = equationString.slice(operatorsIndex+1);
+    // console.log(equationString);
+    // console.log(slicedString);
+    subStringOIndex = slicedString.search(operatorPattern);
+    if (subStringOIndex !== -1) {
+      operatorsArray.push(slicedString.charAt(subStringOIndex));
+    }
+    // console.log(subStringOIndex);
+    operatorsIndex += subStringOIndex+1;
+    // console.log(operatorsIndex);
+  }
+  console.log(operatorsArray);
+
 };
 
 function display(secondDisplay, mainDisplay){

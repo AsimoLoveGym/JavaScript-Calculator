@@ -237,7 +237,7 @@ function calculating(equationString) {
   calculatingResult = Number(calculatingResult);
   console.log(calculatingResult);
   return calculatingResult;
-};
+}
 // ********************** Above for calculating ************************
 
 // ********************** Below for displaying ************************

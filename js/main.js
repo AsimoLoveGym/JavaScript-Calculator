@@ -203,15 +203,18 @@ function calculating(equationString) {
     operatorsArray.shift();
   }
 
-  for(var i = 0; i < operatorsArray.length; i ++) {
-    // extract the number from numbersArray, ready for calculating
-    var num1 = Number(numbersArray[0]);
-    // removed the number has been utilized
-    numbersArray.shift();
-    var num2 = Number(numbersArray[0]);
-    numbersArray.shift();
-    // console.log("Before Calculating",numbersArray);
+  var num1 = 0;
+  var num2 = 0;
 
+  for(var i = 0; i < operatorsArray.length; i ++) {
+    if (i === 0 ) {
+      num1 = Number(numbersArray[0]);
+      num2 = Number(numbersArray[1]);
+    } else {
+      num1 = calculatingResult;
+      num2 = Number(numbersArray[i+1]);
+    }
+    // console.log("Before Calculating",numbersArray);
     // Different calculating with different operators
     switch (operatorsArray[i]){
       case "+":
@@ -227,13 +230,13 @@ function calculating(equationString) {
         calculatingResult = num1 / num2;
         break;
     }
-    calculatingResult = calculatingResult.toFixed(5);
-    calculatingResult = Number(calculatingResult);
-    console.log(calculatingResult);
     // console.log(calculatingResult);
     // console.log("After Calculating",numbersArray);
-    return calculatingResult;
   }
+  calculatingResult = calculatingResult.toFixed(5);
+  calculatingResult = Number(calculatingResult);
+  console.log(calculatingResult);
+  return calculatingResult;
 };
 // ********************** Above for calculating ************************
 

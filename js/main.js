@@ -73,6 +73,8 @@ $(document).ready(function(){
         afterCalculating = false;
         // once input with just one operator, we need a number to be followed
         expectOperator = false;
+        //
+        expectCalculating = false;
       } else {
         // lastOperator = singleInput;
         // update the input value with the operator just input
@@ -81,6 +83,8 @@ $(document).ready(function(){
         currentInput = "";
         // once input with just one operator, we need a number to be followed
         expectOperator = false;
+        //
+        expectCalculating = false;
       }
 
     } else if (singleInput === "AC") {

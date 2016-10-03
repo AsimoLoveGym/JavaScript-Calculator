@@ -148,6 +148,9 @@ function calculating(equationString) {
   // equationString = "78+24x12-54+343+34";
   // split the equationString, and grap the numbers into an array
   numbersArray = equationString.split(operatorPattern);
+  numbersArray = numbersArray.filter(function(item){
+    return item;
+  });
   // for testing
   // console.log(numbersArray);
 
@@ -179,10 +182,23 @@ function calculating(equationString) {
   // for testing
   // console.log(operatorsArray);
   // console.log("1+3: ",Number("1+3"));
-numbersArray
+
   // Calculating with extracted operatorsArray and numbersArray
   // there are how many operators in operatorsArray, there should be the same
   // number of calculating exist.
+
+  // Special case
+  // If previous resut is a negative number, negative symbol would be extracted as an minus operator
+  // that's not the case. Since the previous result is always the first number
+  // remove the first minus operator in operatorsArray
+  // And change the first number in numbersArray to be negative
+  console.log(numbersArray);
+  console.log(operatorsArray);
+  if (numbersArray.length === operatorsArray.length) {
+    numbersArray[0] = -1* numbersArray[0];
+    operatorsArray.shift();
+  }
+
   for(var i = 0; i < operatorsArray.length; i ++) {
     // extract the number from numbersArray, ready for calculating
     var num1 = Number(numbersArray[0]);

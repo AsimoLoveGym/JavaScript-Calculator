@@ -207,6 +207,9 @@ numbersArray
         calculatingResult = num1 / num2;
         break;
     }
+    calculatingResult = calculatingResult.toFixed(5);
+    calculatingResult = Number(calculatingResult);
+    console.log(calculatingResult);
     // console.log(calculatingResult);
     // console.log("After Calculating",numbersArray);
     return calculatingResult;
@@ -222,7 +225,15 @@ function display(secondDisplay, mainDisplay){
   if(mainDisplay === "") {
     mainDisplay = "0";
   }
-  $("#main-display").html(mainDisplay);
-  $("#second-display").html(secondDisplay);
+  // for testing
+  // secondDisplay= "99999999999999999999";
+  // mainDisplay = "9999999999";
+  if (mainDisplay.length > 9 ||secondDisplay.length > 20) {
+    $("#main-display").html("0");
+    $("#second-display").html("Digit Limit Met");
+  } else {
+    $("#main-display").html(mainDisplay);
+    $("#second-display").html(secondDisplay);
+  }
 }
 // ********************** Above for displaying ************************

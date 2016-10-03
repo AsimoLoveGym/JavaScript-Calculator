@@ -3,6 +3,10 @@ var currentInput = "";
 var lastOperator = "";
 var operatorPattern = /\+|\-|x|÷/;
 var operatorPatternGlobal = /\+|\-|x|÷/g;
+var expectNumber = true;
+var expectOperator = false;
+var expectCalculating = false;
+var afterCalculating = false;
 
 $(document).ready(function(){
   $(".btn").click(function(event){
@@ -12,26 +16,76 @@ $(document).ready(function(){
     singleInput = event.currentTarget.innerHTML;
     var numberPattern = /\d|\./;
 
-    if (numberPattern.test(singleInput)) {
-      // console.log("it's a number or '.'");
-      input += singleInput;
-      currentInput += singleInput;
-    } else if (operatorPattern.test(singleInput)) {
-      // console.log("it's a math operator");
-      lastOperator = singleInput;
-      input += singleInput;
-      currentInput = "";
+    if (numberPattern.test(singleInput) && expectNumber) {
+      // it's a number or '.'
+      if (singleInput === "0" && currentInput.length === 0) {
+        // Do nothing. Invalid input, no need to update input and currentInput
+      } else if (singleInput === "." &&currentInput.indexOf(".") > -1) {
+        // Do nothing. Invalid input, no need to update input and currentInput
+      } else if (afterCalculating) {
+        input = singleInput;
+        currentInput = singleInput;
+        afterCalculating = false;
+        expectOperator = true;
+        expectCalculating = true;
+      } else {
+        input += singleInput;
+        currentInput += singleInput;
+        expectOperator = true;
+        expectCalculating = true;
+      }
+    } else if (operatorPattern.test(singleInput) && expectOperator && input !== ".") {
+      // it's a math operator
+      if (afterCalculating) {
+        lastOperator = singleInput;
+        input = currentInput;
+        input += singleInput;
+        currentInput = "";
+        afterCalculating = false;
+        expectOperator = false;
+      } else {
+        lastOperator = singleInput;
+        input += singleInput;
+        currentInput = "";
+        expectOperator = false;
+      }
+
     } else if (singleInput === "AC") {
-      // console.log("it's AC mode");
+      // it's AC mode
+      // Reset all the control flags and initial values
       input = "";
       currentInput = "";
+      lastOperator = "";
+      expectNumber = true;
+      expectOperator = false;
+      expectCalculating = false;
+      afterCalculating = false;
     } else if (singleInput === "CE") {
-      var lastIndexOfOperator = input.lastIndexOf(lastOperator);
-      input = input.slice(0, lastIndexOfOperator+1);
+      // if last character of input is number, remove the number until a operator is at the end.
+      if(numberPattern.test(input.charAt(input.length-1))) {
+        // keep slice the input until met the operator
+        while (numberPattern.test(input.charAt(input.length-1))){
+          input = input.slice(0,input.length-1);
+        }
+        expectOperator = false;
+      } else if (operatorPattern.test(input.charAt(input.length-1))) {
+        input = input.slice(0,input.length-1);
+        expectOperator = true;
+      }
+      // var lastIndexOfOperator = input.lastIndexOf(lastOperator);
+      // input = input.slice(0, lastIndexOfOperator+1);
       currentInput = "";
-    } else if (singleInput === "=") {
+
+    } else if (singleInput === "=" && expectCalculating) {
       // console.log("it's calculating mode");
-      currentInput = calculating(input);
+      if(operatorPattern.test(input)) {
+        console.log("Calculating.....");
+        currentInput = calculating(input);
+        expectNumber = true;
+        expectOperator = true;
+        expectCalculating = false;
+        afterCalculating = true;
+      }
     }
     // console.log(input);
     // console.log(currentInput);
@@ -48,7 +102,7 @@ function calculating(equationString) {
   var slicedString = "";
   var calculatingResult = 0;
   // for Test
-  equationString = "1+2x3-6÷2+5";
+  // equationString = "78+24x12-54+343+34";
   numbersArray = equationString.split(operatorPattern);
   console.log(numbersArray);
 
@@ -78,7 +132,7 @@ function calculating(equationString) {
     numbersArray.shift();
     console.log("Before Calculating",numbersArray);
 
-    /\+|\-|x|÷/
+    // /\+|\-|x|÷/
     switch (operatorsArray[i]){
       case "+":
         calculatingResult = num1 + num2;
@@ -96,6 +150,7 @@ function calculating(equationString) {
     console.log(calculatingResult);
     numbersArray.unshift(calculatingResult);
     console.log("After Calculating",numbersArray);
+    return calculatingResult;
   }
 };
 

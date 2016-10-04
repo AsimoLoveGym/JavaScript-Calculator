@@ -4,7 +4,7 @@ This is a JavaScript project for [Free Code Camp challenge](https://www.freecode
 
 Didn’t use Javascript eval() method.
 
-You can [view the site here](http://codepen.io/AsimoLoveGym/full/BLwZNg/
+You can [view the site here](http://codepen.io/AsimoLoveGym/full/BLwZNg/)
 
 ## How to Use:
 
